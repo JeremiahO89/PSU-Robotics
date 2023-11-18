@@ -1,4 +1,5 @@
 {
     "board": "arduino:avr:uno",
-    "sketch": "psu\\psu.ino"
+    "sketch": "psu\\psu.ino",
+    "port": "COM3"
 }

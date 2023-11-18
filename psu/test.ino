@@ -1,26 +1,24 @@
-#include <NewPing.h>
-
+// #include <NewPing.h>
 
 const int L_MOTOR_FORWARD = 3;
 const int L_MOTOR_BACKWARD = 4;
 const int R_MOTOR_FORWARD = 5;
 const int R_MOTOR_BACKWARD = 6;
-const int MOTOR_ENABLE = 7;
 
 const int IR_Right = 2;
 const int IR_Mid = 8;
 const int IR_Left = 9;
 
-const int Trig_Left = 13; 
-const int Echo_Left = 12;
-const int Trig_Middle = 11;
-const int Echo_Middle = 10;
-const int Trig_Right = 1;
-const int Echo_Right = 0;
+// const int Trig_Left = 13; 
+// const int Echo_Left = 12;
+// const int Trig_Middle = 11;
+// const int Echo_Middle = 10;
+// const int Trig_Right = 1;
+// const int Echo_Right = 0;
 
-NewPing sonarLeft(Trig_Left, Echo_Left, 200);
-NewPing sonarMiddle(Trig_Middle, Echo_Middle, 200);
-NewPing sonarRight(Trig_Right, Echo_Right, 200);
+// NewPing sonarLeft(Trig_Left, Echo_Left, 200);
+// NewPing sonarMiddle(Trig_Middle, Echo_Middle, 200);
+// NewPing sonarRight(Trig_Right, Echo_Right, 200);
 
 
 void stopMoving(){
@@ -73,15 +71,16 @@ void setup() {
   pinMode (L_MOTOR_BACKWARD, OUTPUT);
   pinMode (R_MOTOR_FORWARD, OUTPUT);
   pinMode (R_MOTOR_BACKWARD, OUTPUT);
-  pinMode (MOTOR_ENABLE, OUTPUT);
   pinMode (IR_Right, INPUT);
   pinMode (IR_Mid, INPUT);
   pinMode (IR_Left, INPUT);
 
   pinMode (7, OUTPUT);
+  pinMode(7, HIGH);  
 
   stopMoving();
   delay(5000);
+  pinMode(7, LOW); 
   }
 
 
@@ -91,52 +90,20 @@ void loop() {
   int status_Right = digitalRead(IR_Right);
 
   
-  Serial.println("Left" + status_Left);
-  Serial.println("Middle" + status_Mid);
-  Serial.println("Right" + status_Right);
+  Serial.println(status_Left);
+  Serial.println(status_Mid);
+  Serial.println(status_Right);
 
-  // Drive on the Line
-  if ((status_Left == 0 && status_Right == 0) || status_Mid == 1) {
-    moveForward();
-  }
-  else if (status_Left == 0 && status_Right == 1 && status_Mid == 0) {
-    turnLeft();
-  }
-  else if (status_Left == 1 && status_Right == 0 && status_Mid == 0) {
-    turnRight();
-  }
-  else{
-    moveForward();
-  } // there is an intersection bc it is reading 3 lines
+  // int distance_Left = sonarLeft.ping_cm();
+  // int distance_Middle = sonarMiddle.ping_cm();
+  // int distance_Right = sonarRight.ping_cm();
 
-
-
-  int distance_Left = sonarLeft.ping_cm();
-  int distance_Middle = sonarMiddle.ping_cm();
-  int distance_Right = sonarRight.ping_cm();
-
-  Serial.println("Left" + distance_Left);
-  Serial.println("Middle" + distance_Middle);
-  Serial.println("Right" + distance_Right);
-  // // pings should be atleast 29ms apart
-  // if ( ((distance_Left + distance_Right) > wall_dist) && (distance_Left > (distance_Right + 2)) ) {
-  //   turnLeft();
-  //   delay(NINE_DEG);
-  //   stopMoving();
-
-  // }
-
-  // else if(distance_Middle > 5);{
-  //   moveForward();
-  // }
-
-  // if else(((distance_Left + distance_Right) < wall_dist) && (distance_Mid < 5))
-  // {
-  //   moveLeft();
-  //   delay(ONE_EIGHT_DEG);
-  // }
+  // Serial.println("Left" + distance_Left);
+  // Serial.println("Middle" + distance_Middle);
+  // Serial.println("Right" + distance_Right);
+  
   pinMode(7, LOW);
-  delay(1000); // update frequency (if to jittery increase)
+  delay(100); // update frequency (if to jittery increase)
   pinMode(7,HIGH);
 }
 
