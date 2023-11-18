@@ -92,28 +92,30 @@ void loop() {
   if ((status_Left == 0 && status_Right == 0) || status_Mid == 1) {
     moveForward();
   }
-  if else (status_Left == 0 && status_Right == 1 && status_Mid == 0) {
-    moveLeft();
+  else if (status_Left == 0 && status_Right == 1 && status_Mid == 0) {
+    turnLeft();
   }
-  if else (status_Left == 1 && status_Right == 0 && status_Mid == 0) {
-    moveRight();
+  else if (status_Left == 1 && status_Right == 0 && status_Mid == 0) {
+    turnRight();
   }
-  else {moveForward} // there is an intersection bc it is reading 3 lines
+  else{
+    moveForward();
+  } // there is an intersection bc it is reading 3 lines
 
 
 
   int distance_Left = sonarLeft.ping_cm();
-  int distance_Mid = sonarMid.ping_cm();
+  int distance_Middle = sonarMiddle.ping_cm();
   int distance_Right = sonarRight.ping_cm();
   // pings should be atleast 29ms apart
   if ( ((distance_Left + distance_Right) > wall_dist) && (distance_Left > (distance_Right + 2)) ) {
-    moveLeft();
+    turnLeft();
     delay(NINE_DEG);
     stopMoving();
 
   }
 
-  if else(distance_Mid > 5);{
+  else if(distance_Middle > 5);{
     moveForward();
   }
 
