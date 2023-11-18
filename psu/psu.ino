@@ -88,6 +88,11 @@ void loop() {
   int status_Mid = digitalRead(IR_Mid);
   int status_Right = digitalRead(IR_Right);
 
+  
+  Serial.println("Left" + status_Left);
+  Serial.println("Middle" + status_Mid);
+  Serial.println("Right" + status_Right);
+
   // Drive on the Line
   if ((status_Left == 0 && status_Right == 0) || status_Mid == 1) {
     moveForward();
