@@ -1,25 +1,26 @@
 #include <NewPing.h>
 
+
 const int L_MOTOR_FORWARD = 3;
 const int L_MOTOR_BACKWARD = 4;
 const int R_MOTOR_FORWARD = 5;
 const int R_MOTOR_BACKWARD = 6;
 const int MOTOR_ENABLE = 7;
 
-const int IR_Right = 0;
-const int IR_Mid = 1;
-const int IR_Left = 2;
+const int IR_Right = 2;
+const int IR_Mid = 8;
+const int IR_Left = 9;
 
 const int Trig_Left = 13; 
 const int Echo_Left = 12;
 const int Trig_Middle = 11;
 const int Echo_Middle = 10;
-const int Trig_Right = 9;
-const int Echo_Right = 8;
+const int Trig_Right = 1;
+const int Echo_Right = 0;
 
-NewPing sonarSensorLeft(Trig_Left, Echo_Left, 200);
-NewPing sonarSensorMiddle(Trig_Middle, Echo_Middle, 200);
-NewPing sonarSensorRight(Trig_Right, Echo_Right, 200);
+NewPing sonarLeft(Trig_Left, Echo_Left, 200);
+NewPing sonarMiddle(Trig_Middle, Echo_Middle, 200);
+NewPing sonarRight(Trig_Right, Echo_Right, 200);
 
 
 void stopMoving(){
@@ -60,22 +61,9 @@ void turnLeft(){
 
 
 
-
-class Node {
-public:
-    int data;
-    Node* left;
-    Node* right;
-
-    // Constructor
-    Node(int value) : data(value), left(nullptr), right(nullptr) {}
-};
-
-class Tree {
-public:
-Tree*root;
-
-}
+const int wall_dist = 20;
+const int NINE_DEG = 2000;
+const int ONE_EIGHT_DEG = 4000;
 
 void setup() {
   Serial.begin(9600);
@@ -100,28 +88,41 @@ void loop() {
   int status_Mid = digitalRead(IR_Mid);
   int status_Right = digitalRead(IR_Right);
 
+  // Drive on the Line
   if ((status_Left == 0 && status_Right == 0) || status_Mid == 1) {
     moveForward();
   }
-
-  if else (status_Left == 0 && status_Right == 1 && status_mid == 0) {
+  if else (status_Left == 0 && status_Right == 1 && status_Mid == 0) {
     moveLeft();
   }
-
-  if else (status_Left == 1 && status_Right == 0 && status_mid == 0) {
+  if else (status_Left == 1 && status_Right == 0 && status_Mid == 0) {
     moveRight();
   }
-
   else {moveForward} // there is an intersection bc it is reading 3 lines
 
 
 
-  
+  int distance_Left = sonarLeft.ping_cm();
+  int distance_Mid = sonarMid.ping_cm();
+  int distance_Right = sonarRight.ping_cm();
+  // pings should be atleast 29ms apart
+  if ( ((distance_Left + distance_Right) > wall_dist) && (distance_Left > (distance_Right + 2)) ) {
+    moveLeft();
+    delay(NINE_DEG);
+    stopMoving();
 
+  }
 
-  int previous_L = status_Left;
-  int previous_M = status_Mid;
-  int previous_R = status_Right;
+  if else(distance_Mid > 5);{
+    moveForward();
+  }
 
+  // if else(((distance_Left + distance_Right) < wall_dist) && (distance_Mid < 5))
+  // {
+  //   moveLeft();
+  //   delay(ONE_EIGHT_DEG);
+  // }
+
+  delay(50); // update frequency (if to jittery increase)
 }
 
