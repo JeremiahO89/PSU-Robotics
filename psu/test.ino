@@ -72,10 +72,11 @@ void turnLeft(){
   digitalWrite(R_MOTOR_BACKWARD, HIGH);
 }
 
-void get_data(){
+void IR_get_data(){
   status_Left = digitalRead(IR_Left);
   //status_Mid = digitalRead(IR_Mid);
   status_Right = digitalRead(IR_Right);
+  Serial.println("Left: " + String(distance_Left) + "   Middle: " + String(distance_Middle));
 }
 
 void turn180(){
@@ -114,16 +115,13 @@ void setup() {
 
 
 void loop() {
-  status_Left = digitalRead(IR_Left);
-  //status_Mid = digitalRead(IR_Mid);
-  status_Right = digitalRead(IR_Right);
+  IR_get_data();
 
   distance_Left = (sonarLeft.ping_cm());
   distance_Middle = (sonarMiddle.ping_cm());
   //distance_Right = (sonarRight.ping() / 58);
 
   //Serial.println("IR_L: " + String(status_Left) + "   IR_M: " + String(status_Mid) + "   IR_R:" + String(status_Right));
-  Serial.println("Left: " + String(distance_Left) + "   Middle: " + String(distance_Middle) + "   Right: " + String(distance_Right));
 
   // if ((distance_Middle < 4) && (distance_Middle > 2)) {
   //   digitalWrite(7, LOW);  
@@ -139,7 +137,7 @@ void loop() {
   if (((distance_Middle < 4) && (distance_Middle > 2)) && ((distance_Left < 5) && (distance_Left >20))) {
     turn180();
     while (status_Left != 0 && status_Right != 0){
-    get_data();
+    IR_get_data();
     turnLeft(); 
     delay(.5);
     stopMoving();
@@ -152,7 +150,7 @@ void loop() {
   else if ((distance_Left < 5) && (distance_Left >2)) {
     turn90();
     while (status_Left != 0 && status_Right != 0){
-    get_data();
+    IR_get_data();
     turnLeft(); 
     delay(.5);
     stopMoving();
@@ -164,7 +162,7 @@ void loop() {
   // Drive on the Line
   if (status_Left == 0 && status_Right == 1) {
     while (status_Left == 0 && status_Right == 1) {
-    get_data();
+    IR_get_data();
     turnRight();
     delay(.5);
     stopMoving();
@@ -173,7 +171,7 @@ void loop() {
   }
   else if (status_Left == 1 && status_Right == 0) {
     while (status_Left == 1 && status_Right == 0){
-    get_data();
+    IR_get_data();
     turnLeft(); 
     delay(.5);
     stopMoving();
@@ -183,7 +181,7 @@ void loop() {
 
   else if (status_Left == 1 && status_Right == 1) {
     while (status_Left == 1 && status_Right == 1){
-    get_data();
+    IR_get_data();
     turnLeft(); 
     delay(.5);
     stopMoving();
@@ -192,7 +190,7 @@ void loop() {
   }
   else{
     while (status_Left == 0 && status_Right == 0){
-    get_data();
+    IR_get_data();
     moveForward(); 
     delay(.5);
     stopMoving();
